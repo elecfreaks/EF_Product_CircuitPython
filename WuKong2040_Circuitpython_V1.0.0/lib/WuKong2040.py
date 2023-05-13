@@ -27,12 +27,12 @@ class WuKong2040:
          self.neopixelpin.direction = digitalio.Direction.OUTPUT
          self.colorlist = [0, 0, 0, 0, 0, 0,]
          neopixel_write.neopixel_write(self.neopixelpin, bytearray(self.colorlist))
-         
-    def rainbow_led(self,num, red, green, blue):
-        self.num = num
+
+    def rainbow_led(self,num = "all", red = 0 , green = 0, blue = 0):
         self.red = red
         self.green = green
-        self.blue = blue        
+        self.blue = blue
+        self.num = num
         if self.num == 0:
             self.colorlist[0] = self.green
             self.colorlist[1] = self.red
@@ -43,36 +43,32 @@ class WuKong2040:
             self.colorlist[4] = self.red
             self.colorlist[5] = self.blue 
             neopixel_write.neopixel_write(self.neopixelpin, bytearray(self.colorlist))
-            
-    def rainbow_all(self,red, green, blue):
-        self.red = red
-        self.green = green
-        self.blue = blue
-        self.colorlist[0] = self.green
-        self.colorlist[1] = self.red
-        self.colorlist[2] = self.blue
-        self.colorlist[3] = self.green
-        self.colorlist[4] = self.red
-        self.colorlist[5] = self.blue 
-        neopixel_write.neopixel_write(self.neopixelpin, bytearray(self.colorlist))
-    
-    def buttonA_ispressed(self):
-        if self._ButtonA.value == False:
-            if self._ButtonB.value == True:
-                return True
-    
-    def buttonB_ispressed(self):
-        if self._ButtonB.value == False:
-            if self._ButtonA.value == True:
-                return True
-            
-    def buttonAB_ispressed(self):
-        if self._ButtonA.value == False and self._ButtonB.value == False:
-            time.sleep(0.1)
+        if self.num == "all":
+            self.colorlist[0] = self.green
+            self.colorlist[1] = self.red
+            self.colorlist[2] = self.blue
+            self.colorlist[3] = self.green
+            self.colorlist[4] = self.red
+            self.colorlist[5] = self.blue 
+            neopixel_write.neopixel_write(self.neopixelpin, bytearray(self.colorlist))
+        
+    def button_is_pressed(self, buttonName = "ButtonA"):
+        self._buttonName = buttonName
+        if self._buttonName == "ButtonA":
+            if self._ButtonA.value == False:
+                if self._ButtonB.value == True:
+                    return True
+        if self._buttonName == "ButtonB":
+            if self._ButtonB.value == False:
+                if self._ButtonA.value == True:
+                    return True
+        if self._buttonName == "ButtonAB":
             if self._ButtonA.value == False and self._ButtonB.value == False:
-                return True
-    
-    def motor(self, motorNumber,speed):
+                time.sleep(0.1)
+                if self._ButtonA.value == False and self._ButtonB.value == False:
+                    return True
+            
+    def motor(self, motorNumber= "M1",speed=0):
         self._motorNumber = motorNumber
         self._speed = speed
         if self._motorNumber == "M1":
@@ -490,3 +486,6 @@ class Music:
 
 music = Music(board.GP9)
        
+
+
+
